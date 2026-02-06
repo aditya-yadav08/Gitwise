@@ -1,8 +1,15 @@
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import z from "zod";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const projectRouter = createTRPCRouter({
-    createProject: publicProcedure.input().mutation(async ({ctx, input}) => {
-        console.log("HI")
+    createProject: protectedProcedure.input(
+        z.object({
+            name: z.string(),
+            githubUrl: z.string(),
+            githubToken: z.string()
+        })
+    ).mutation(async ({ctx, input}) => {
+        console.log('input', input)
         return true
     })
 })
